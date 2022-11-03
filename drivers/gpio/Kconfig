@@ -496,7 +496,7 @@ config GPIO_REG
 	  can be used to represent any register as a set of GPIO signals.
 
 config GPIO_ROCKCHIP
-	tristate "Rockchip GPIO support"
+	bool "Rockchip GPIO support"
 	depends on ARCH_ROCKCHIP || COMPILE_TEST
 	select GPIOLIB_IRQCHIP
 	default ARCH_ROCKCHIP

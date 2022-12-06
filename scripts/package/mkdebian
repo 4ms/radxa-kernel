@@ -184,7 +184,7 @@ Description: Linux kernel, version $version
  This package contains the Linux kernel, modules and corresponding other
  files, version: $version.
 
-Package: linux-libc-dev
+Package: linux-libc-dev-$version
 Section: devel
 Provides: linux-kernel-headers
 Architecture: $debarch

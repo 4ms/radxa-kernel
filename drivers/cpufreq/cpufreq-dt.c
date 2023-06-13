@@ -375,7 +375,32 @@ static struct platform_driver dt_cpufreq_platdrv = {
 	.probe		= dt_cpufreq_probe,
 	.remove		= dt_cpufreq_remove,
 };
-module_platform_driver(dt_cpufreq_platdrv);
+
+static int __init dt_cpufreq_platdrv_init(void)
+{
+#if defined(CONFIG_ARCH_ROCKCHIP) && defined(CONFIG_ARM_ROCKCHIP_CPUFREQ_MODULE)
+	int ret;
+	const char *name = "rockchip-cpufreq";
+
+	ret = request_module(name);
+	if (ret)
+		return ret;
+#endif
+
+	return platform_driver_register(&dt_cpufreq_platdrv);
+}
+
+static void __exit dt_cpufreq_platdrv_exit(void)
+{
+	platform_driver_unregister(&dt_cpufreq_platdrv);
+}
+
+#if defined(CONFIG_ARCH_ROCKCHIP) && defined(CONFIG_ARM_ROCKCHIP_CPUFREQ_MODULE)
+late_initcall(dt_cpufreq_platdrv_init);
+#else
+module_init(dt_cpufreq_platdrv_init);
+#endif
+module_exit(dt_cpufreq_platdrv_exit);
 
 MODULE_ALIAS("platform:cpufreq-dt");
 MODULE_AUTHOR("Viresh Kumar <viresh.kumar@linaro.org>");
